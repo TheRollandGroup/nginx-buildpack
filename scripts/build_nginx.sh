@@ -38,8 +38,8 @@ echo "Downloading $zlib_url"
 (
   cd nginx-${NGINX_VERSION}
   ./configure \
-    --with-pcre=pcre-${PCRE_VERSION} \
-    --with-zlib=zlib-${ZLIB_VERSION} \
+    --with-pcre \
+    --with-zlib \
     --prefix=/tmp/nginx \
     --with-http_ssl_module \
     --with-http_gzip_static_module \

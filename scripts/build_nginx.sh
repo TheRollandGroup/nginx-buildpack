@@ -29,17 +29,10 @@ echo "Temp dir: $temp_dir"
 echo "Downloading $nginx_tarball_url"
 curl -L $nginx_tarball_url | tar xzv
 
-echo "Downloading $pcre_tarball_url"
-(cd nginx-${NGINX_VERSION} && curl -L $pcre_tarball_url | tar xvj )
-
-echo "Downloading $zlib_url"
-(cd nginx-${NGINX_VERSION} && curl -L $zlib_url | tar xvz )
-
 (
   cd nginx-${NGINX_VERSION}
   ./configure \
     --with-pcre \
-    --with-zlib \
     --prefix=/tmp/nginx \
     --with-http_ssl_module \
     --with-http_gzip_static_module \

@@ -2,20 +2,25 @@
 
 set -e
 
-mkdir -p "$1/bin/"
-cp "bin/nginx" "$1/bin/nginx"
-nginx_version=$(./bin/nginx-$STACK -V 2>&1 | head -1 | awk '{ print $NF }')
+build=$(cd "$1/" && pwd)
+cache=$(cd "$2/" && pwd)
+env_dir="${3}"
+buildpack=$(cd "$(dirname $0)/.." && pwd)
+
+mkdir -p "$build/bin/"
+cp "$buildpack/bin/nginx" "$build/bin/nginx"
+nginx_version=$($buildpack/bin/nginx-$STACK -V 2>&1 | head -1 | awk '{ print $NF }')
 echo "-----> nginx-buildpack: Installed ${nginx_version} to app/bin"
-cp bin/start-nginx "$1/bin/"
+cp "$buildpack/bin/start-nginx" "$build/bin/"
 echo '-----> nginx-buildpack: Added start-nginx to app/bin'
 
-mkdir -p "$1/config"
+mkdir -p "$build/config"
 
-cp config/mime.types "$1/config/"
+cp "$buildpack/config/mime.types" "$build/config/"
 echo '-----> nginx-buildpack: Default mime.types copied to app/config/'
 
-if [[ ! -f $1/config/nginx.conf.erb ]]; then
-	cp config/nginx.conf.erb "$1/config/"
+if [[ ! -f $build/config/nginx.conf.erb ]]; then
+	cp "$buildpack/config/nginx.conf.erb" "$build/config/"
 	echo '-----> nginx-buildpack: Default config copied to app/config.'
 else
 	echo '-----> nginx-buildpack: Custom config found in app/config.'
